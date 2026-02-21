@@ -1,0 +1,22 @@
+<div id="changelog" style="
+  background:#111;
+  color:#fff;
+  padding:20px;
+  border-radius:12px;
+  max-width:700px;
+  margin:auto;
+  font-family: monospace;
+  white-space: pre-wrap;
+"></div>
+
+<script>
+fetch("changelog.txt")
+  .then(response => response.text())
+  .then(text => {
+    document.getElementById("changelog").textContent = text;
+  })
+  .catch(() => {
+    document.getElementById("changelog").textContent =
+      "Unable to load changelog.";
+  });
+</script>
