@@ -1,6 +1,11 @@
+const redirect = sessionStorage.redirect;
+if (redirect) {
+  sessionStorage.removeItem("redirect");
+  history.replaceState(null, "", redirect);
+}
+
 const buttons = document.querySelectorAll(".menu-bar button");
 const sections = document.querySelectorAll(".section");
-
 buttons.forEach(button => {
   button.addEventListener("click", () => {
     const target = button.dataset.section;
