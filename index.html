@@ -42,14 +42,8 @@ body {
 }
 
 #changelog {
-  background: #0d0d0d;
-  padding: 20px;
-  border-radius: 12px;
-  font-family: monospace;
-  white-space: pre-wrap;
-  max-height: 500px;
+  max-height: 600px;
   overflow-y: auto;
-  border: 1px solid #222;
 }
 
 /* Scrollbar styling */
@@ -105,7 +99,7 @@ fetch("changelog.txt")
     const container = document.getElementById("changelog");
     container.innerHTML = "";
 
-    const logs = text.split(/Dev Log\s+/).filter(Boolean);
+    const logs = text.split(/Dev Log\s+/).filter(Boolean).reverse();
 
     logs.forEach(log => {
       const section = document.createElement("div");
