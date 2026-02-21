@@ -3,17 +3,80 @@
   <head>
     <meta charset="UTF-8">
     <title>OAC</title>
-    
     <link rel="icon" type="image/png" href="https://i.imgur.com/YnAhNh9.png">
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
     <div class="container">
-      <div class="title">OAC Development Logs</div>
-      <div class="subtitle">By EclipsesDev @ 2026</div>
-      <div id="changelog">Loading changelog...</div>
+      
+      <!-- Menu Bar -->
+      <nav class="menu-bar">
+        <button data-section="home" class="active">Home</button>
+        <button data-section="changelog">OAC Changelog</button>
+        <button data-section="about">About</button>
+      </nav>
+      
+      <!-- Sections -->
+      <div id="sections">
+
+        <!-- Home Section -->
+        <div id="home" class="section active">
+          <div class="title">Welcome to Oriental Development Page</div>
+          <div class="subtitle">By EclipsesDev @ 2026</div>
+
+          <!-- <p style="text-align:center; margin-bottom: 20px;">
+            Hi! I'm <strong>EclipsesDev</strong>, a developer focused on Minecraft anti-cheat systems and Roblox projects.
+          </p> -->
+
+          <div id="github-readme" class="readme-container"></div>
+
+          <!-- Featured Projects -->
+          <div id="projects" style="text-align:center; margin-bottom:30px;">
+            <h2>Featured Projects</h2>
+            <div style="display:flex; justify-content:center; gap:20px; flex-wrap: wrap; margin-top:15px; margin-bottom:30px;">
+              <div class="project-card">
+                <img src="https://skillicons.dev/icons?i=java" alt="OAC" class="project-icon">
+                <p><strong>Oriental Anticheat</strong><br>Advanced Minecraft anti-cheat system for 1.21.4+</p>
+              </div>
+              <div class="project-card">
+                <img src="https://skillicons.dev/icons?i=java" alt="OAP" class="project-icon">
+                <p><strong>OAP</strong><br>Simple Minecraft anti-plugin system for 1.21.4+</p>
+              </div>
+              <div class="project-card">
+                <img src="https://skillicons.dev/icons?i=kotlin" alt="LiquidBounce" class="project-icon">
+                <p><strong>LiquidBounce (Ex Maintainer)</strong><br>A free mixin-based injection hacked client for Minecraft using the Forge.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Profile Icons -->
+          <!-- <div style="text-align:center; margin-bottom:15px;">
+            <a href="https://github.com/EclipsesDev" target="_blank"><img src="https://skillicons.dev/icons?i=github" class="home-icon" alt="GitHub"></a><a href="https://dcd.gg/orientalnetwork" target="_blank"><img src="https://skillicons.dev/icons?i=discord" class="home-icon" alt="Discord"></a><a href="https://www.jetbrains.com/idea/" target="_blank"></a>
+          </div> -->
+        </div>
+
+        <!-- Changelog Section -->
+        <div id="changelog" class="section">
+          <div class="title">OAC Development Logs</div>
+          <div class="subtitle">Consisting of all the updates and changes made to OAC</div>
+          <div id="changelog-logs">Loading changelog...</div>
+        </div>
+        
+        <!-- About Section -->
+        <div id="about" class="section">
+          <div class="title">About</div>
+          <p style="text-align:center;">
+            <div style="text-align:center; margin-bottom:15px;">
+              <a href="https://github.com/EclipsesDev" target="_blank"><img src="https://skillicons.dev/icons?i=github" class="home-icon" alt="GitHub"></a><a href="https://dcd.gg/orientalnetwork" target="_blank"><img src="https://skillicons.dev/icons?i=discord" class="home-icon" alt="Discord"></a><a href="https://www.jetbrains.com/idea/" target="_blank"></a>
+            </div>
+          </p>
+        </div>
+        
+      </div>
+      
     </div>
     
     <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   </body>
 </html>

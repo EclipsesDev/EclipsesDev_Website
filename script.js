@@ -1,7 +1,24 @@
+const buttons = document.querySelectorAll(".menu-bar button");
+const sections = document.querySelectorAll(".section");
+
+buttons.forEach(button => {
+  button.addEventListener("click", () => {
+    const target = button.dataset.section;
+
+    buttons.forEach(b => b.classList.remove("active"));
+    button.classList.add("active");
+
+    sections.forEach(sec => {
+      sec.classList.remove("active");
+      if (sec.id === target) sec.classList.add("active");
+    });
+  });
+});
+
 fetch("changelog.txt")
   .then(response => response.text())
   .then(text => {
-    const container = document.getElementById("changelog");
+    const container = document.getElementById("changelog-logs");
     container.innerHTML = "";
 
     const logs = text.split(/\n?Dev Log\s+/).filter(Boolean).reverse();
@@ -33,6 +50,17 @@ fetch("changelog.txt")
     });
   })
   .catch(() => {
-    document.getElementById("changelog").textContent =
+    document.getElementById("changelog-logs").textContent =
       "ERROR: Unable to load changelog.";
+  });
+
+fetch("https://raw.githubusercontent.com/EclipsesDev/EclipsesDev/main/README.md")
+  .then(res => res.text())
+  .then(md => {
+    const html = marked.parse(md);
+    document.getElementById("github-readme").innerHTML = html;
+  })
+  .catch(err => {
+    document.getElementById("github-readme").textContent = "ERROR: Failed to load README.";
+    console.error(err);
   });
