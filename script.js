@@ -51,7 +51,7 @@ document.querySelectorAll(".menu-bar button").forEach(button => {
 document.addEventListener("DOMContentLoaded", handleRoute);
 window.addEventListener("popstate", handleRoute);
 
-fetch("https://eclipsesdev-api.workers.dev")
+fetch("https://github-proxy.eclipsesdev-api.workers.dev")
   .then(response => response.text())
   .then(text => {
     const container = document.getElementById("changelog-logs");
