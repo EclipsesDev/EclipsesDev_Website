@@ -45,16 +45,17 @@ body {
 #changelog {
   max-height: 600px;
   overflow-y: auto;
-  scrollbar-gutter: stable;
 }
 
 #changelog::-webkit-scrollbar {
   width: 8px;
+  padding-right: 50px;
 }
 
 #changelog::-webkit-scrollbar-thumb {
   background: #333;
   border-radius: 4px;
+  padding-right: 50px;
 }
 
 .log-section { 
