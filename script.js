@@ -51,8 +51,16 @@ document.querySelectorAll(".menu-bar button").forEach(button => {
 document.addEventListener("DOMContentLoaded", handleRoute);
 window.addEventListener("popstate", handleRoute);
 
-fetch("https://github-proxy.eclipsesdev-api.workers.dev")
-  .then(response => response.text())
+fetch("https://api.eclipsesdev.my.id", {
+  method: "GET",
+  credentials: "include"
+})
+  .then(response => {
+    if (!response.ok) {
+      throw new Error("Access denied or failed request");
+    }
+    return response.text();
+  })
   .then(text => {
     const container = document.getElementById("changelog-logs");
     container.innerHTML = "";
@@ -71,6 +79,7 @@ fetch("https://github-proxy.eclipsesdev-api.workers.dev")
       title.textContent = titleText;
 
       const list = document.createElement("ul");
+
       lines.slice(1).forEach(line => {
         if (line.trim().startsWith("-")) {
           const li = document.createElement("li");
@@ -84,7 +93,8 @@ fetch("https://github-proxy.eclipsesdev-api.workers.dev")
       container.appendChild(section);
     });
   })
-  .catch(() => {
+  .catch(err => {
+    console.error(err);
     document.getElementById("changelog-logs").textContent =
       "ERROR: Unable to load changelog.";
   });
