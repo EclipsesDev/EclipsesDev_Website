@@ -45,19 +45,20 @@ function activateSection(id) {
 }
 
 function handleRoute() {
-  const hash = window.location.hash;
-  const section = hash ? hash.substring(1) : "home";
+  const path = window.location.pathname.substring(1);
+  const section = path || "home";
   activateSection(section);
 }
 
 document.querySelectorAll(".menu-bar button").forEach(button => {
   button.addEventListener("click", () => {
     const target = button.dataset.section;
-    window.location.hash = target;
+    history.pushState(null, "", target);
+    activateSection(target);
   });
 });
 
-window.addEventListener("hashchange", handleRoute);
+window.addEventListener("popstate", handleRoute);
 document.addEventListener("DOMContentLoaded", handleRoute);
 
 fetch("https://api.eclipsesdev.my.id")
