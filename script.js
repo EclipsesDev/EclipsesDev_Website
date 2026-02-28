@@ -21,11 +21,10 @@ if (redirect) {
 // });
 
 function activateSection(id) {
-  const buttons = document.querySelectorAll(".menu-bar button");
+  const buttons = document.querySelectorAll(".menu-bar button, .menu-bar a.menu-button");
   const sections = document.querySelectorAll(".section");
-
   let found = false;
-
+  
   sections.forEach(sec => {
     if (sec.id === id) {
       sec.style.display = "block";
