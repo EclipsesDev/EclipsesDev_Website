@@ -27,11 +27,16 @@ button {
     cursor: pointer;
 }
 
+button:hover {
+    background: #2563eb;
+}
+
 .text-display {
     font-size: 20px;
     line-height: 1.8;
     max-width: 800px;
     margin: 20px auto;
+    margin-left: -1px;
     word-wrap: break-word;
     word-break: break-word;
     white-space: normal;
