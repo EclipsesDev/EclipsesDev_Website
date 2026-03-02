@@ -60,7 +60,7 @@ document.querySelectorAll(".menu-bar button").forEach(button => {
 window.addEventListener("popstate", handleRoute);
 document.addEventListener("DOMContentLoaded", handleRoute);
 
-fetch("https://api.eclipsesdev.my.id")
+fetch("https://api.eclipsesdev.my.id/changelog/")
   .then(response => {
     if (!response.ok) {
       throw new Error("Failed to load changelog");

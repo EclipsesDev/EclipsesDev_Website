@@ -26,11 +26,14 @@ document.addEventListener("DOMContentLoaded", () => {
         restartBtn.click();
     });
 
-    function loadText() {
-        textDisplay.innerHTML = "Loading text...";
+    async function loadText() {
+    textDisplay.innerHTML = "Loading text...";
 
-        const randomIndex = Math.floor(Math.random() * sentences.length);
-        let text = sentences[randomIndex];
+    try {
+        const response = await fetch("https://api.eclipsesdev.my.id/sentence/");
+        const data = await response.json();
+
+        let text = data.sentence;
 
         text = text.slice(0, difficultyLength[currentDifficulty]);
 
@@ -44,6 +47,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (textDisplay.children.length > 0) {
             textDisplay.children[0].classList.add("current");
+        }
+
+        } catch (err) {
+            textDisplay.innerHTML = "Failed to load text.";
+            console.error(err);
         }
     }
 
