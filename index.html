@@ -6,7 +6,7 @@
     <title>EclipsesDev - Portal</title>
 
     <link rel="icon" type="image/png" href="https://i.imgur.com/YnAhNh9.png">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
   </head>
   <body>
     <div class="container">
@@ -14,11 +14,11 @@
       <!-- Menu Bar -->
       <nav class="menu-bar">
         <button data-section="home" class="active">Home</button>
-        <button data-section="changelog">Changelog</button>
-        <a href="/projects/typing-test/">
+        <a href="/changelog"><button>Changelog</button></a>
+        <a href="/projects/typing-test">
           <button>Typing Test</button>
         </a>
-        <button data-section="about">About</button>
+        <a href="/about"><button>About</button></a>
       </nav>
       
       <!-- Sections -->
@@ -50,30 +50,13 @@
             </div>
           </div>
         </div>
-
-        <!-- Changelog Section -->
-        <div id="changelog" class="section">
-          <div class="title">Oriental Development Logs</div>
-          <div class="subtitle">Consisting of all the updates and changes made to Oriental Development</div>
-          <div id="changelog-logs">Loading changelog...</div>
-        </div>
-        
-        <!-- About Section -->
-        <div id="about" class="section">
-          <div class="title">About</div>
-          <p style="text-align:center;">
-            <div style="text-align:center; margin-bottom:15px;">
-              <a href="https://github.com/EclipsesDev" target="_blank"><img src="https://skillicons.dev/icons?i=github" class="home-icon" alt="GitHub"></a><a href="https://dcd.gg/orientalnetwork" target="_blank"><img src="https://skillicons.dev/icons?i=discord" class="home-icon" alt="Discord"></a><a href="https://www.jetbrains.com/idea/" target="_blank"></a>
-            </div>
-          </p>
-        </div>
         
       </div>
       
     </div>
     
     <!-- Script Section -->
-    <script src="script.js"></script>
+    <script src="/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   </body>
 </html>
