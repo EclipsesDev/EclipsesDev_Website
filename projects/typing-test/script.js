@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let started = false;
     let mistakes = 0;
 
-    let currentDifficulty = "medium";
+    let currentDifficulty = "easy";
 
     const difficultyLength = {
         easy: 80,
@@ -19,35 +19,46 @@ document.addEventListener("DOMContentLoaded", () => {
         hard: 250
     };
 
-    const difficultySelect = document.getElementById("difficulty-select");
+    const difficultyButtons = document.querySelectorAll(".difficulty-btn");
 
-    difficultySelect.addEventListener("change", () => {
-        currentDifficulty = difficultySelect.value;
-        restartBtn.click();
+    difficultyButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            difficultyButtons.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            currentDifficulty = btn.dataset.difficulty;
+            restartBtn.click();
+        });
     });
 
     async function loadText() {
-    textDisplay.innerHTML = "Loading text...";
+        textDisplay.innerHTML = "Loading text...";
 
-    try {
-        const response = await fetch("https://api.eclipsesdev.my.id/sentence/");
-        const data = await response.json();
+        try {
+            const targetLength = difficultyLength[currentDifficulty];
+            let text = "";
 
-        let text = data.sentence;
+            while (text.length < targetLength) {
+                const response = await fetch("https://api.eclipsesdev.my.id/sentence/");
+                const data = await response.json();
 
-        text = text.slice(0, difficultyLength[currentDifficulty]);
+                text += (text ? " " : "") + data.sentence;
+            }
+            text = text.trim();
+            if (!/[.!?]$/.test(text)) {
+                text += ".";
+            }
 
-        textDisplay.innerHTML = "";
+            textDisplay.innerHTML = "";
 
-        text.split("").forEach(char => {
-            const span = document.createElement("span");
-            span.innerText = char;
-            textDisplay.appendChild(span);
-        });
+            text.split("").forEach(char => {
+                const span = document.createElement("span");
+                span.innerText = char;
+                textDisplay.appendChild(span);
+            });
 
-        if (textDisplay.children.length > 0) {
-            textDisplay.children[0].classList.add("current");
-        }
+            if (textDisplay.children.length > 0) {
+                textDisplay.children[0].classList.add("current");
+            }
 
         } catch (err) {
             textDisplay.innerHTML = "Failed to load text.";

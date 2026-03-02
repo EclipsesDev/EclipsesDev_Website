@@ -61,3 +61,29 @@ button {
     font-size: 18px;
     margin-top: 30px;
 }
+
+#difficulty-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.difficulty-btn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    background: #3b82f6;
+    color: white;
+    transition: 0.2s;
+}
+
+.difficulty-btn:hover {
+    background: #2563eb;
+}
+
+.difficulty-btn.active {
+    background: #22c55e;
+}
