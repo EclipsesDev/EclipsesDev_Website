@@ -1,5 +1,4 @@
 let changelogLoaded = false;
-let readmeLoaded = false;
 
 function activateSection(id) {
   const sections = document.querySelectorAll(".section");
@@ -18,11 +17,6 @@ function activateSection(id) {
   if (id === "changelog" && !changelogLoaded) {
     loadChangelog();
     changelogLoaded = true;
-  }
-
-  if (id === "home" && !readmeLoaded) {
-    loadReadme();
-    readmeLoaded = true;
   }
 }
 
@@ -68,18 +62,6 @@ function loadChangelog() {
       console.error(err);
       document.getElementById("changelog-logs").textContent =
         "ERROR: Unable to load changelog.";
-    });
-}
-
-function loadReadme() {
-  fetch("https://raw.githubusercontent.com/EclipsesDev/EclipsesDev/main/README.md")
-    .then(res => res.text())
-    .then(md => {
-      document.getElementById("github-readme").innerHTML = marked.parse(md);
-    })
-    .catch(err => {
-      document.getElementById("github-readme").textContent = "ERROR: Failed to load README.";
-      console.error(err);
     });
 }
 
