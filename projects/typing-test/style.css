@@ -1,0 +1,94 @@
+.current {
+    border-bottom: 2px solid white;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 50%, 100% { border-color: white; }
+    25%, 75% { border-color: transparent; }
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+}
+
+.typetest button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    border: none;
+    background: #3b82f6;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
+    
+.typetest button:hover {
+    background: #2563eb;
+}
+
+.text-display {
+    font-size: 20px;
+    line-height: 1.8;
+    max-width: 800px;
+    margin: 20px auto;
+    margin-left: -1px;
+    word-wrap: break-word;
+    word-break: break-word;
+    white-space: normal;
+
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+.text-display span {
+    transition: color 0.1s ease;
+    color: #9ca3af;
+}
+
+.text-display span.correct {
+    color: #22c55e;
+}
+
+.text-display span.incorrect {
+    color: #ef4444;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 15px;
+    font-size: 18px;
+    margin-top: 30px;
+}
+
+#difficulty-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.difficulty-btn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    background: #3b82f6;
+    color: white;
+    transition: 0.2s;
+}
+
+.difficulty-btn:hover {
+    background: #2563eb;
+}
+
+.difficulty-btn.active {
+    background: #22c55e;
+}

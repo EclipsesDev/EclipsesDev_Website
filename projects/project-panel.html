@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>EclipsesDev - Projects</title>
+
+    <link rel="icon" type="image/png" href="https://i.imgur.com/YnAhNh9.png">
+    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="/projects/style.css">
+</head>
+    <body>
+
+    <div class="container">
+
+        <!-- Nav Bar -->
+        <nav class="nav-bar">
+            <a href="/"><button>Home</button></a>
+        </nav>
+
+        <h1 style="text-align:center;margin-top:40px;">Projects</h1>
+
+        <div class="projects-container">
+            <!-- Typing Test -->
+            <div class="project-card" onclick="openProject('typing-test')">
+            <img src="https://skillicons.dev/icons?i=js" class="project-icon">
+            <div class="project-title">Typing Test</div>
+            <div class="project-desc">Speed typing practice with live WPM stats</div>
+            </div>
+
+            <!-- Video Cloud -->
+            <div class="project-card" onclick="openProject('video-cloud')">
+            <img src="https://skillicons.dev/icons?i=cloudflare" class="project-icon">
+            <div class="project-title">Video Cloud</div>
+            <div class="project-desc">Cloudflare powered video hosting panel</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Script Section -->
+    <script src="/projects/script.js"></script>
+    </body>
+</html>

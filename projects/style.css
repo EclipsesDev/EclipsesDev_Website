@@ -1,0 +1,39 @@
+.projects-container {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin-top: 60px;
+}
+
+.project-card {
+  background: #1c1c1c;
+  padding: 25px;
+  width: 250px;
+  border-radius: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s;
+  box-shadow: 0 0 25px rgba(0,0,0,0.4);
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 35px rgba(0,0,0,0.6);
+}
+
+.project-icon {
+  width: 70px;
+  margin-bottom: 10px;
+}
+
+.project-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.project-desc {
+  font-size: 14px;
+  color: #aaa;
+  margin-top: 5px;
+}

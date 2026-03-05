@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    
+    <title>EclipsesDev - Portal</title>
+
+    <link rel="icon" type="image/png" href="https://i.imgur.com/YnAhNh9.png">
+    <link rel="stylesheet" href="/assets/style.css">
+  </head>
+  <body>
+  
+  <!-- Nav Bar -->
+  <nav class="nav-bar">
+    <button data-section="home" class="active">Home</button>
+    <a href="/changelog"><button>Changelog</button></a>
+    <a href="/projects/project-panel"><button>Project Panel</button></a>
+    <a href="/about"><button>About</button></a>
+  </nav>
+
+  <!-- Container -->
+  <div class="container">
+
+    <!-- Sections -->
+    <div id="sections">
+
+      <!-- Home Section -->
+      <div id="home" class="section">
+        <div class="title">Welcome to Oriental Development Page</div>
+        <div class="subtitle">By EclipsesDev @ 2026</div>
+
+        <div id="github-readme" class="readme-container"></div>
+
+        <!-- Featured Projects -->
+        <div id="projects" style="text-align:center; margin-bottom:30px;">
+          <h2>Featured Projects</h2>
+
+          <div style="display:flex; justify-content:center; gap:20px; flex-wrap: wrap; margin-top:15px; margin-bottom:30px;">
+            
+            <div class="project-card">
+              <img src="https://skillicons.dev/icons?i=java" alt="OAC" class="project-icon">
+              <p><strong>Oriental Anticheat</strong><br>Advanced Minecraft anti-cheat system for 1.21.4+</p>
+            </div>
+
+            <div class="project-card">
+              <img src="https://skillicons.dev/icons?i=java" alt="OAP" class="project-icon">
+              <p><strong>OAP</strong><br>Simple Minecraft anti-plugin system for 1.21.4+</p>
+            </div>
+
+            <div class="project-card">
+              <img src="https://skillicons.dev/icons?i=kotlin" alt="LiquidBounce" class="project-icon">
+              <p><strong>LiquidBounce (Ex Maintainer)</strong><br>A free mixin-based injection hacked client for Minecraft using the Forge.</p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="/assets/script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</body>
+</html>
