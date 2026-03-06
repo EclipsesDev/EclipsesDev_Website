@@ -146,17 +146,19 @@ body {
 .readme-container {
   max-height: 250px;
   min-height: fit-content;
-  overflow-y: auto;
+  overflow-y: hidden;
   padding: 15px;
   padding-right: 20px;
   background: none;
   border-radius: 12px;
   border: 2px solid #4da6ff;
   box-shadow: 0 2px 8px #88c0ff;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 .readme-container::-webkit-scrollbar {
-  display: none;
+  display: none; /* Chrome, Edge and Safari */
 }
 
 .project-banner-container {
