@@ -143,7 +143,7 @@ body {
   vertical-align: middle;
 }
 
-.readme-container {
+.project-container {
   max-height: 250px;
   min-height: fit-content;
   overflow-y: hidden;
@@ -157,7 +157,7 @@ body {
   scrollbar-width: none; /* Firefox */
 }
 
-.readme-container::-webkit-scrollbar {
+.project-container::-webkit-scrollbar {
   display: none; /* Chrome, Edge and Safari */
 }
 
@@ -169,6 +169,12 @@ body {
   overflow: hidden;
   contain: paint;
   border-radius: 10px;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.project-banner-container::-webkit-scrollbar {
+  display: none; /* Chrome, Edge and Safari */
 }
 
 .project-banner {
@@ -177,13 +183,10 @@ body {
   object-fit: cover;
   animation: movingBanner 12s ease-in-out infinite;
   filter: blur(2px);
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
-@keyframes movingBanner {
-  0%   { transform: translate(0%, 0%); filter: blur(1px); }
-  20%  { transform: translate(-5%, -3%); filter: blur(0.9px); }
-  40%  { transform: translate(3%, -6%); filter: blur(1.2px); }
-  60%  { transform: translate(-10%, 10%); filter: blur(1.8px); }
-  80%  { transform: translate(4%, 2%); filter: blur(1.7px); }
-  100% { transform: translate(0%, 0%); filter: blur(1.5px); }
+.project-banner::-webkit-scrollbar {
+  display: none; /* Chrome, Edge and Safari */
 }
