@@ -3,7 +3,7 @@
   "configurations": [
     {
       "name": "Launch NPX Serve",
-      "type": "firefox",
+      "type": "chrome",
       "request": "launch",
       "url": "http://localhost:3000",
       "webRoot": "${workspaceFolder}",
