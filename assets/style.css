@@ -143,6 +143,14 @@ body {
   vertical-align: middle;
 }
 
+.project-card {
+  transition: transform 0.2s linear;
+}
+
+.project-card:hover {
+  transform: scale(1.05);
+}
+
 .project-container {
   max-height: 250px;
   min-height: 350px;
