@@ -106,7 +106,7 @@ async function playVideo(videoId) {
   });
 
   if (!res.ok) {
-    alert("Failed to load video: " + res.status);
+    alert("Failed to load video: " + res.status + " " + res.statusText);
     return;
   }
 
