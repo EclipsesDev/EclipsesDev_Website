@@ -1,6 +1,6 @@
 const VideoCloudAuth = (() => {
   const CONFIG = {
-    apiBase: "https://video-cloud-auth.eclipsesdev-api.workers.dev/api/video-auth",
+    apiBase: "https://api.eclipsesdev.my.id/authentication/api/video-auth",
     loginPath: "/projects/video-cloud/login",
     defaultRedirect: "/projects/video-cloud/"
   };
