@@ -37,7 +37,7 @@ const VideoCloudAuth = (() => {
     if (
       returnTarget &&
       returnTarget.startsWith("/projects/video-cloud/") &&
-      !returnTarget.includes("/login.html")
+      !returnTarget.includes("/login/")
     ) {
       return returnTarget;
     }
