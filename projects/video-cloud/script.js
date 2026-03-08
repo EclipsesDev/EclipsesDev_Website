@@ -88,25 +88,37 @@ async function initPanelPage() {
 
 async function loadVideos() {
     const container = document.getElementById("video-grid");
-    container.innerHTML = "Loading videos...";
-    container.innerHTML = "";
+    if (!container) return;
 
-    const maxId = 50; // try video IDs 1 - 50
+    container.innerHTML = "Loading videos...";
+
+    const maxId = 50;
+    const requests = [];
 
     for (let id = 1; id <= maxId; id++) {
-        try {
-            const res = await fetch(`/video-api/storage/video-meta?id=${id}`, {
+        requests.push(
+            fetch(`/video-api/storage/video-meta?id=${id}`, {
                 credentials: "include"
-            });
+            }).then(res => ({ res, id }))
+        );
+    }
 
-            if (!res.ok) continue;
+    const results = await Promise.all(requests);
 
+    container.innerHTML = "";
+
+    for (const { res, id } of results) {
+        if (!res.ok) continue;
+
+        try {
             const data = await res.json();
+
             const card = document.createElement("div");
             card.className = "video-card";
 
             const img = document.createElement("img");
-            img.src = `/assets/img/favicon.ico`; // fallback thumbnail
+            const videoUrl = `/video-api/storage/video?id=${id}`;
+            img.src =  await getThumbnailFromVideo(videoUrl, 1) || `/assets/img/favicon.ico`;
             card.appendChild(img);
 
             const title = document.createElement("h3");
@@ -114,16 +126,39 @@ async function loadVideos() {
             card.appendChild(title);
 
             card.onclick = () => openVideo(id);
-            container.appendChild(card);
 
-        } catch (err) {
-            continue;
-        }
+            container.appendChild(card);
+        } catch {}
     }
 
     if (!container.hasChildNodes()) {
         container.innerHTML = "No videos found.";
     }
+}
+
+async function getThumbnailFromVideo(videoUrl, seekTime = 1) {
+    return new Promise((resolve, reject) => {
+        const video = document.createElement("video");
+        video.src = videoUrl;
+        video.crossOrigin = "anonymous";
+        video.muted = true;
+
+        video.addEventListener("loadeddata", () => {
+            video.currentTime = seekTime;
+        });
+
+        video.addEventListener("seeked", () => {
+            const canvas = document.createElement("canvas");
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const thumbnail = canvas.toDataURL("image/png");
+            resolve(thumbnail);
+        });
+
+        video.addEventListener("error", (e) => reject(e));
+    });
 }
 
 async function openVideo(id) {
