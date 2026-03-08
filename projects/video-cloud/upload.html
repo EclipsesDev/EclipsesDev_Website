@@ -44,7 +44,18 @@
 
     try {
       const res = await fetch("/video-api/upload-url", { method: "POST", credentials: "include" });
-      const { uploadUrl, filename } = await res.json();
+
+      // Get raw text first
+      const text = await res.text();
+
+      let uploadUrl, filename;
+      try {
+        ({ uploadUrl, filename } = JSON.parse(text));
+      } catch (err) {
+        console.error("Upload URL response not JSON:", text);
+        alert("Failed to get upload URL. See console for details.");
+        return;
+      }
 
       progressBar.style.display = "block";
       progressBar.value = 0;
