@@ -155,10 +155,15 @@ async function playVideo(videoId) {
   closeBtn.style.width = "48px";
   closeBtn.style.height = "48px";
   closeBtn.style.cursor = "pointer";
-  closeBtn.addEventListener("click", () => {
+
+  const closeLightbox = () => {
+    videoEl.pause();
+    videoEl.currentTime = 0;
     URL.revokeObjectURL(videoURL);
     lightbox.style.display = "none";
-  });
+  };
+
+  closeBtn.addEventListener("click", closeLightbox);
 
   lightbox.appendChild(videoEl);
   lightbox.appendChild(closeBtn);
@@ -166,10 +171,9 @@ async function playVideo(videoId) {
 
   lightbox.addEventListener("click", e => {
     if (e.target === lightbox) {
-      URL.revokeObjectURL(videoURL);
-      lightbox.style.display = "none";
+      closeLightbox();
     }
-  }, { once: true });
+  });
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
