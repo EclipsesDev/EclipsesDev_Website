@@ -30,21 +30,46 @@ function renderSessionInfo(session) {
         `Signed in as ${session.username}${remainingText}`;
 }
 
-async function initPanelPage() {
-    const session = await VideoCloudAuth.getSession({ credentials: "include" });
+async function handleLoginSubmit(event) {
+    event.preventDefault();
 
-    if (!session.authenticated) {
-        const currentPath = `${window.location.pathname}${window.location.search}${window.location.hash}`;
-        const returnParam = encodeURIComponent(currentPath);
-        window.location.href = `/projects/video-cloud/login?return=${returnParam}`;
+    const usernameInput = document.getElementById("username");
+    const passwordInput = document.getElementById("password");
+
+    if (!usernameInput || !passwordInput) {
+        console.error("Login inputs missing!");
         return;
     }
 
-    document.getElementById("logout-btn")?.addEventListener("click", VideoCloudAuth.logout);
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value;
 
-    renderSessionInfo(session);
+    if (!username || !password) {
+        console.warn("Username or password empty");
+        showError("Enter username and password.");
+        return;
+    }
 
-    loadVideos();
+    try {
+        const loginResult = await VideoCloudAuth.login(username, password);
+        console.log("Login response:", loginResult);
+
+        if (!loginResult || !loginResult.authenticated) {
+            console.warn("Login failed: invalid credentials");
+            showError("Invalid username or password.");
+            return;
+        }
+
+        console.log("Login successful, redirecting...");
+        window.location.href = VideoCloudAuth.getReturnTarget();
+    } catch (err) {
+        console.error("Login error:", err);
+        if (err?.status === 401) {
+            showError("Invalid username or password.");
+        } else {
+            showError("Login service unreachable. Check your Worker route.");
+        }
+    }
 }
 
 async function loadVideos() {
