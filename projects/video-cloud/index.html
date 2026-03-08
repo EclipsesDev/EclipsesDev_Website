@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>EclipsesDev - Video Cloud</title>
     
@@ -11,31 +11,23 @@
     <link rel="stylesheet" href="/projects/video-cloud/style.css">
 </head>
 <body>
-    <!-- Nav Bar -->
+
     <nav class="nav-bar">
         <a href="/projects/project-panel"><button>Back</button></a>
         <a href="/"><button>Home</button></a>
         <a href="/projects/video-cloud/upload"><button>Upload</button></a>
-        <button id="logout-btn" type="button">Logout</button>
+        <button id="logout-btn">Logout</button>
     </nav>
 
     <div class="container">
         <h1>Video Cloud</h1>
         <p id="session-info" class="session-info"></p>
+        <div id="video-grid"></div>
+    </div>
 
-        <div id="video-preview-container"></div>
-
-        <div class="video-grid">
-            <div class="video-card">
-                <img src="/assets/img/favicon.ico" alt="Video 1">
-                <button onclick="playVideo(1)">Play</button>
-            </div>
-
-            <div class="video-card">
-                <img src="/assets/img/favicon.ico" alt="Video 2">
-                <button onclick="playVideo(2)">Play</button>
-            </div>
-        </div>
+    <div id="video-lightbox">
+        <button id="close-video">x</button>
+        <video id="video-player" controls></video>
     </div>
 
     <script src="/projects/video-cloud/auth.js"></script>
