@@ -114,12 +114,24 @@ async function playVideo(videoId) {
   const blob = await res.blob();
   const videoURL = URL.createObjectURL(blob);
 
+  const container = document.getElementById("video-preview-container");
+  if (!container) return;
+
+  const wrapper = document.createElement("div");
+  wrapper.classList.add("video-wrapper");
+
   const videoEl = document.createElement("video");
   videoEl.src = videoURL;
   videoEl.controls = true;
   videoEl.autoplay = true;
 
-  document.body.appendChild(videoEl);
+  wrapper.appendChild(videoEl);
+  container.appendChild(wrapper);
+
+  wrapper.addEventListener("click", () => {
+    container.removeChild(wrapper);
+    URL.revokeObjectURL(videoURL);
+  });
 }
 
 document.addEventListener("DOMContentLoaded", async () => {

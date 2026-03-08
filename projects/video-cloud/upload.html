@@ -3,9 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>EclipsesDev - Video Cloud</title>
-
   <link rel="stylesheet" href="/assets/style.css">
   <link rel="stylesheet" href="/projects/video-cloud/style.css">
 </head>
@@ -19,86 +17,48 @@
     <button type="submit">Upload Video</button>
   </form>
 
-  <progress id="progress-bar" value="0" max="100" style="display:none; width: 100%; margin-top: 10px;"></progress>
+  <progress id="progress-bar" max="100" value="0" style="display:none;"></progress>
+  
+  <div id="video-preview-container"></div>
 
-  <script src="/projects/video-cloud/auth.js"></script>
   <script>
-  const form = document.getElementById("upload-form");
-  const progressBar = document.getElementById("progress-bar");
+    const form = document.getElementById("upload-form");
+    const progressBar = document.getElementById("progress-bar");
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-    const fileInput = document.getElementById("video-file");
-    const titleInput = document.getElementById("video-title");
-    const descriptionInput = document.getElementById("video-description");
+      const file = document.getElementById("video-file").files[0];
+      if (!file) return alert("Select a video!");
 
-    const file = fileInput.files[0];
-    if (!file) return alert("Select a video!");
+      const title = document.getElementById("video-title").value.trim() || file.name;
+      const description = document.getElementById("video-description").value.trim() || "";
 
-    const isAuthed = await VideoCloudAuth.isAuthenticated();
-    if (!isAuthed) {
-      await VideoCloudAuth.requireAuth();
-      return;
-    }
-
-    try {
-      const res = await fetch("/video-api/upload-url", { method: "POST", credentials: "include" });
-
-      // Get raw text first
-      const text = await res.text();
-
-      let uploadUrl, filename;
-      try {
-        ({ uploadUrl, filename } = JSON.parse(text));
-      } catch (err) {
-        console.error("Upload URL response not JSON:", text);
-        alert("Failed to get upload URL. See console for details.");
-        return;
-      }
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("title", title);
+      formData.append("description", description);
 
       progressBar.style.display = "block";
-      progressBar.value = 0;
 
-      await new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.open("PUT", uploadUrl);
-        xhr.upload.onprogress = (e) => {
-          if (e.lengthComputable) {
-            progressBar.value = Math.round((e.loaded / e.total) * 100);
-          }
-        };
-        xhr.onload = () => {
-          if (xhr.status >= 200 && xhr.status < 300) {
-            progressBar.value = 100;
-            resolve();
-          } else {
-            reject(new Error("Upload failed with status " + xhr.status));
-          }
-        };
-        xhr.onerror = () => reject(new Error("Upload failed due to network error"));
-        xhr.send(file);
-      });
-
-      await fetch("/video-api/save-video", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({
-          title: titleInput.value.trim() || file.name,
-          description: descriptionInput.value.trim() || "",
-          filename
-        })
-      });
-
-      alert("Upload complete!");
-      progressBar.style.display = "none";
-      form.reset();
-    } catch (err) {
-      alert(err.message);
-      progressBar.style.display = "none";
-    }
-  });
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "/video-api/upload-video", true);
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) {
+          progressBar.value = Math.round((e.loaded / e.total) * 100);
+        }
+      };
+      xhr.onload = () => {
+        progressBar.value = 100;
+        alert(xhr.responseText);
+        progressBar.style.display = "none";
+      };
+      xhr.onerror = () => {
+        alert("Upload failed!");
+        progressBar.style.display = "none";
+      };
+      xhr.send(formData);
+    });
   </script>
 </body>
 </html>
