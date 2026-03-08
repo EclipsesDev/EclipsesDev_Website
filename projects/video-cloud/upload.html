@@ -19,12 +19,15 @@
     <button type="submit">Upload Video</button>
   </form>
 
+  <progress id="upload-progress" value="0" max="100" style="width:100%; display:none;"></progress>
+
   <script src="/projects/video-cloud/auth.js"></script>
   <script>
     const form = document.getElementById("upload-form");
+    const progressBar = document.getElementById("upload-progress");
+
     form.addEventListener("submit", async e => {
       e.preventDefault();
-      const formData = new FormData(form);
 
       const isAuthed = await VideoCloudAuth.isAuthenticated();
       if (!isAuthed) {
@@ -32,14 +35,45 @@
         return;
       }
 
-      const res = await fetch("/video-api/upload-video", {
-        method: "POST",
-        body: formData,
-        credentials: "include"
-      });
+      const file = document.querySelector("input[type=file]").files[0];
 
-      const text = await res.text();
-      alert(text);
+      const res = await fetch("/video-api/upload-url", { method: "POST" });
+      const { uploadUrl, filename } = await res.json();
+
+      progressBar.style.display = "block";
+      progressBar.value = 0;
+
+      const xhr = new XMLHttpRequest();
+      xhr.open("PUT", uploadUrl);
+
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) {
+          const percent = Math.round((e.loaded / e.total) * 100);
+          progressBar.value = percent;
+        }
+      };
+
+      xhr.onload = () => {
+        progressBar.value = 100;
+        progressBar.style.display = "none";
+        
+        fetch("/video-api/save-video", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: document.querySelector("input[name=title]").value,
+            description: document.querySelector("input[name=description]").value,
+            filename
+          })
+        }).then(() => alert("Upload complete!"));
+      };
+
+      xhr.onerror = () => {
+        alert("Upload failed!");
+        progressBar.style.display = "none";
+      };
+
+      xhr.send(file);
     });
   </script>
 </body>
