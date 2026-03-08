@@ -100,7 +100,7 @@ async function playVideo(videoId) {
     return;
   }
 
-  const res = await fetch(`/storage/video?id=${videoId}`, {
+  const res = await fetch(`/video-api/storage/video?id=${videoId}`, {
     method: "GET",
     credentials: "include"
   });
