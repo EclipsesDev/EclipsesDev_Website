@@ -114,28 +114,62 @@ async function playVideo(videoId) {
   const blob = await res.blob();
   const videoURL = URL.createObjectURL(blob);
 
-  const container = document.getElementById("video-preview-container");
-  if (!container) return;
+  let lightbox = document.getElementById("video-lightbox");
+  if (!lightbox) {
+    lightbox = document.createElement("div");
+    lightbox.id = "video-lightbox";
+    lightbox.style.position = "fixed";
+    lightbox.style.top = 0;
+    lightbox.style.left = 0;
+    lightbox.style.width = "100%";
+    lightbox.style.height = "100%";
+    lightbox.style.background = "rgba(0,0,0,0.8)";
+    lightbox.style.display = "flex";
+    lightbox.style.justifyContent = "center";
+    lightbox.style.alignItems = "center";
+    lightbox.style.zIndex = 1000;
 
-  const wrapper = document.createElement("div");
-  wrapper.classList.add("video-wrapper");
+    document.body.appendChild(lightbox);
+  }
 
-  const closeBtn = document.createElement("button");
-  closeBtn.classList.add("close-video");
-  closeBtn.textContent = "✕";
-  closeBtn.addEventListener("click", () => {
-    container.removeChild(wrapper);
-    URL.revokeObjectURL(videoURL);
-  });
+  lightbox.innerHTML = "";
 
   const videoEl = document.createElement("video");
   videoEl.src = videoURL;
   videoEl.controls = true;
-  videoEl.autoplay = false;
+  videoEl.autoplay = true;
+  videoEl.style.maxWidth = "80%";
+  videoEl.style.maxHeight = "80%";
+  videoEl.style.borderRadius = "12px";
 
-  wrapper.appendChild(videoEl);
-  wrapper.appendChild(closeBtn);
-  container.appendChild(wrapper);
+  const closeBtn = document.createElement("button");
+  closeBtn.textContent = "×";
+  closeBtn.style.position = "absolute";
+  closeBtn.style.top = "20px";
+  closeBtn.style.right = "20px";
+  closeBtn.style.fontSize = "32px";
+  closeBtn.style.background = "red";
+  closeBtn.style.color = "white";
+  closeBtn.style.border = "none";
+  closeBtn.style.borderRadius = "50%";
+  closeBtn.style.width = "48px";
+  closeBtn.style.height = "48px";
+  closeBtn.style.cursor = "pointer";
+  closeBtn.addEventListener("click", () => {
+    URL.revokeObjectURL(videoURL);
+    lightbox.style.display = "none";
+  });
+
+  lightbox.appendChild(videoEl);
+  lightbox.appendChild(closeBtn);
+  lightbox.style.display = "flex";
+
+  lightbox.addEventListener("click", e => {
+    if (e.target === lightbox) {
+      URL.revokeObjectURL(videoURL);
+      lightbox.style.display = "none";
+    }
+  }, { once: true });
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
