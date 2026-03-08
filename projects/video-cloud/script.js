@@ -104,14 +104,12 @@ async function loadVideos() {
       return;
     }
 
-    for (const video of videos) {
+    const cards = videos.map(video => {
       const card = document.createElement("div");
       card.className = "video-card";
-      
-      const img = document.createElement("img");
 
-      const thumbnail = await getThumbnailFromVideo(`/video-api/storage/video?id=${video.id}`, 1);
-      img.src = thumbnail || '/assets/img/favicon.ico';
+      const img = document.createElement("img");
+      img.src = '/assets/img/favicon.ico'; // default fallback
       card.appendChild(img);
 
       const title = document.createElement("h3");
@@ -121,7 +119,16 @@ async function loadVideos() {
       card.onclick = () => openVideo(video.id);
 
       container.appendChild(card);
-    }
+      return { video, img };
+    });
+
+    // Generate thumbnails last...
+    await Promise.allSettled(cards.map(async ({ video, img }) => {
+      try {
+        const thumbnail = await getThumbnailFromVideo(`/video-api/storage/video?id=${video.id}`, 1);
+        img.src = thumbnail || img.src;
+      } catch {}
+    }));
 
   } catch (err) {
     console.error(err);
