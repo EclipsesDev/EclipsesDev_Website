@@ -216,3 +216,16 @@ body {
   75% { transform: translateY(-25%); } 
   100% { transform: translateY(0%); } 
 }
+
+.icon-row {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.home-icon {
+  width: 40px;
+  height: 40px;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 5px;
+}
