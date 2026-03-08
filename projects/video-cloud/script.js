@@ -37,8 +37,8 @@ async function handleLoginSubmit(event) {
 async function initLoginPage() {
   const session = await VideoCloudAuth.getSession();
   if (session.authenticated) {
-    window.location.href = VideoCloudAuth.getReturnTarget();
-    return;
+      window.location.href = VideoCloudAuth.getReturnTarget() || "/projects/video-cloud/";
+      return;
   }
 
   const form = document.getElementById("login-form");
