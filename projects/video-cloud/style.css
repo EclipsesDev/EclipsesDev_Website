@@ -123,6 +123,7 @@ h1 {
 #upload-form {
     display: flex;
     flex-direction: column;
+    text-align: center;
     gap: 15px;
     background-color: #1f2937;
     padding: 30px 40px;
@@ -232,4 +233,9 @@ form#upload-form button:hover {
     height:50px;
     border-radius:50%;
     cursor:pointer;
+}
+
+#progress-bar {
+  margin: 20px auto;
+  width: 60%;
 }
