@@ -107,6 +107,8 @@ async function loadVideos() {
     for (const video of videos) {
       const card = document.createElement("div");
       card.className = "video-card";
+      
+      const img = document.createElement("img");
 
       const thumbnail = await getThumbnailFromVideo(`/video-api/storage/video?id=${video.id}`, 1);
       img.src = thumbnail || '/assets/img/favicon.ico';
