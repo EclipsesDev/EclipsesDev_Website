@@ -27,6 +27,7 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  pointer-events: none;
   z-index: 10003;
 }
 
@@ -37,6 +38,7 @@
   border: none;
   border-radius: 50%;
   padding: 20px;
+  pointer-events: all;
   z-index: 10004;
 }
 
