@@ -31,20 +31,28 @@
             <video id="vc-player" playsinline webkit-playsinline></video>
 
             <div id="vc-overlay">
-                <button id="vc-play-btn">▶</button>
+                <button id="vc-play-btn" type="button" aria-label="Play or pause video">
+                    <img id="vc-play-icon" class="vc-icon vc-play-icon" src="/assets/img/Play.png" alt="Play">
+                </button>
             </div>
 
             <div id="vc-controls">
                 <div id="vc-progress-container">
                     <div id="vc-progress-bar"></div>
                 </div>
-                <button id="vc-mute-btn">🔊</button>
+                <button id="vc-mute-btn" type="button" aria-label="Toggle mute">
+                    <img id="vc-mute-icon" class="vc-icon vc-control-icon" src="/assets/svg/unmute.svg" alt="Unmuted">
+                </button>
                 <span id="vc-time">0:00 / 0:00</span>
-                <button id="vc-fullscreen-btn">⛶</button>
+                <button id="vc-fullscreen-btn" type="button" aria-label="Toggle fullscreen">
+                    <img id="vc-fullscreen-icon" class="vc-icon vc-control-icon" src="/assets/svg/maximize.svg" alt="Enter fullscreen">
+                </button>
             </div>
         </div>
 
-        <button id="vc-close-btn">✕</button>
+        <button id="vc-close-btn" type="button" aria-label="Close video">
+            <img id="vc-close-icon" class="vc-icon vc-close-icon" src="/assets/svg/close.svg" alt="Close">
+        </button>
     </div>
 
     <script src="/projects/video-cloud/vs-assets/vc.js"></script>
