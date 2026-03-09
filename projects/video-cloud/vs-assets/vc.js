@@ -45,7 +45,11 @@ vcMute.addEventListener("click", () => {
 });
 
 vcFullscreen.addEventListener("click", () => {
-  vcLightbox.requestFullscreen?.();
+  if (!document.fullscreenElement) {
+    vcLightbox.requestFullscreen?.();
+  } else {
+    document.exitFullscreen?.();
+  }
 });
 
 function closeVc() {

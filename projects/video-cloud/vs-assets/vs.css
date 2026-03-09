@@ -36,6 +36,21 @@
   padding: 20px;
 }
 
+#vc-close-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  font-size: 40px;
+  background: red;
+  color: white;
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10001;
+}
+
 #vc-controls {
   position: absolute;
   bottom: 20px;
