@@ -26,6 +26,7 @@
   align-items: center;
   z-index: 10003;
   pointer-events: all;
+  touch-action: manipulation;
 }
 
 #vc-overlay {
