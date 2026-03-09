@@ -66,6 +66,23 @@ function isFullscreenActive() {
   );
 }
 
+function exitFullscreenIfNeeded() {
+  if (!isFullscreenActive()) return;
+
+  if (document.exitFullscreen) {
+    const maybePromise = document.exitFullscreen();
+    maybePromise?.catch?.(() => {});
+    return;
+  }
+
+  if (document.webkitExitFullscreen) {
+    document.webkitExitFullscreen();
+    return;
+  }
+
+  vcPlayer.webkitExitFullscreen?.();
+}
+
 function openVcVideo(url) {
   vcPlayer.src = url;
   vcLightbox.style.display = "flex";
@@ -127,17 +144,12 @@ vcFullscreen.addEventListener("click", () => {
       vcPlayer.webkitEnterFullscreen?.();
     }
   } else {
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if (document.webkitExitFullscreen) {
-      document.webkitExitFullscreen();
-    } else {
-      vcPlayer.webkitExitFullscreen?.();
-    }
+    exitFullscreenIfNeeded();
   }
 });
 
 function closeVc() {
+  exitFullscreenIfNeeded();
   vcPlayer.pause();
   if (vcPlayer.src.startsWith("blob:")) {
     URL.revokeObjectURL(vcPlayer.src);

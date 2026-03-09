@@ -46,13 +46,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0,0,0,0.5);
+  background: transparent;
   border: none;
   border-radius: 50%;
+  box-shadow: none;
   padding: clamp(10px, 2.8vw, 20px);
   cursor: pointer;
   pointer-events: all;
   z-index: 10004;
+  -webkit-tap-highlight-color: transparent;
 }
 
 #vc-play-btn:hover {
