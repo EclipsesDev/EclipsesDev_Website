@@ -26,22 +26,27 @@
         <div id="video-grid"></div>
     </div>
 
-    <div id="vc-lightbox" class="vc-lightbox">
-        <video id="vc-player" preload="metadata"></video>
+    <div class="vc-lightbox" id="vc-lightbox">
+        <div class="vc-video-container">
 
-        <div id="vc-overlay">
-            <button id="vc-play-btn">►</button>
-        </div>
+            <video id="vc-player"></video>
 
-        <div id="vc-controls">
+            <div id="vc-overlay">
+            <button id="vc-play-btn">▶</button>
+            </div>
+
+            <div id="vc-controls">
             <div id="vc-progress-container">
-            <div id="vc-progress-bar"></div>
+                <div id="vc-progress-bar"></div>
             </div>
             <button id="vc-mute-btn">🔊</button>
             <span id="vc-time">0:00 / 0:00</span>
             <button id="vc-fullscreen-btn">⛶</button>
-            <button id="vc-close-btn">✕</button>
+            </div>
+
         </div>
+
+        <button id="vc-close-btn">✕</button>
     </div>
 
     <script src="/projects/video-cloud/vs-assets/vc.js"></script>

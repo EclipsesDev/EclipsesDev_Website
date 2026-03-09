@@ -13,21 +13,15 @@
   max-height: 80%;
   border-radius: 10px;
   background: black;
-  position: relative;
   z-index: 10002;
 }
 
 #vc-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
-  pointer-events: none;
   z-index: 10003;
 }
 
@@ -40,6 +34,10 @@
   padding: 20px;
   pointer-events: all;
   z-index: 10004;
+}
+
+#vc-play-btn:hover {
+  transform: scale(1.15);
 }
 
 #vc-close-btn {
@@ -86,4 +84,11 @@
   width: 0%;
   background: #3b82f6;
   border-radius: 3px;
+}
+
+.vc-video-container {
+  position: relative;
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
 }
