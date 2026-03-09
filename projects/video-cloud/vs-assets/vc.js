@@ -27,8 +27,14 @@ function togglePlay() {
   else vcPlayer.pause();
 }
 
+// Desktop click
 vcOverlay.addEventListener("click", togglePlay);
-vcOverlay.addEventListener("touchstart", togglePlay);
+
+// Mobile tap
+vcOverlay.addEventListener("touchend", e => {
+  togglePlay();
+  e.preventDefault();
+});
 
 vcPlayer.addEventListener("play", () => {
   vcPlay.textContent = "⏸";
