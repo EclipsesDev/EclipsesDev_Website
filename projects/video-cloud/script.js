@@ -145,8 +145,18 @@ async function openVcVideoFromId(id) {
 
         openVcVideo(url);
     } catch (err) {
-        alert("Video failed to load");
-        console.error(err);
+        console.error("Video load error:", err);
+
+        const container = document.getElementById("video-grid");
+        if (container) {
+            const debug = document.createElement("pre");
+            debug.style.color = "red";
+            debug.style.whiteSpace = "pre-wrap";
+            debug.textContent = "Video error:\n" + err.message;
+            container.prepend(debug);
+        }
+
+        alert("Video failed to load.\n\n" + err.message);
     }
 }
 
