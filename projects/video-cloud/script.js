@@ -137,12 +137,7 @@ async function loadVideos() {
 
 async function openVcVideoFromId(id) {
     try {
-        const res = await fetch(`/video-api/storage/video?id=${id}`, { credentials: "include" });
-        if (!res.ok) throw new Error("Video failed to load");
-
-        const blob = await res.blob();
-        const url = URL.createObjectURL(blob);
-
+        const url = `/video-api/storage/video?id=${id}`;
         openVcVideo(url);
     } catch (err) {
         console.error("Video load error:", err);
