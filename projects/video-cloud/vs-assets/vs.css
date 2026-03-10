@@ -86,7 +86,7 @@
 
 #vc-controls {
   position: absolute;
-  bottom: 10px;
+  bottom: 20px;
   left: 20px;
   right: 20px;
   display: flex;
@@ -195,7 +195,7 @@
 .vc-lightbox:-webkit-full-screen #vc-controls {
   left: max(12px, env(safe-area-inset-left));
   right: max(12px, env(safe-area-inset-right));
-  bottom: max(12px, env(safe-area-inset-bottom));
+  bottom: max(24px, env(safe-area-inset-bottom));
   padding: 8px 10px;
 }
 
@@ -208,7 +208,7 @@
   #vc-controls {
     left: 10px;
     right: 10px;
-    bottom: max(10px, env(safe-area-inset-bottom));
+    bottom: max(18px, env(safe-area-inset-bottom));
     padding: 8px;
     gap: 8px;
   }
