@@ -134,6 +134,7 @@
   height: 100%;
   object-fit: contain;
   pointer-events: none;
+  filter: brightness(0) invert(1);
 }
 
 .vc-play-icon {
@@ -149,7 +150,6 @@
 .vc-close-icon {
   width: 24px;
   height: 24px;
-  filter: invert(1);
 }
 
 .vc-lightbox:fullscreen,
