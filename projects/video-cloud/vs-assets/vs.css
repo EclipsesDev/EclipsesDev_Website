@@ -191,6 +191,19 @@
   right: max(12px, env(safe-area-inset-right));
 }
 
+.vc-lightbox:fullscreen #vc-controls,
+.vc-lightbox:-webkit-full-screen #vc-controls {
+  left: max(12px, env(safe-area-inset-left));
+  right: max(12px, env(safe-area-inset-right));
+  bottom: max(12px, env(safe-area-inset-bottom));
+  padding: 8px 10px;
+}
+
+.vc-lightbox:fullscreen #vc-progress-container,
+.vc-lightbox:-webkit-full-screen #vc-progress-container {
+  height: 4px;
+}
+
 @media (max-width: 768px) {
   #vc-controls {
     left: 10px;
