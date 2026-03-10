@@ -217,43 +217,43 @@ async function getThumbnailFromVideo(videoUrl, seekTime = 1) {
     });
 }
 
-async function openVideo(id) {
-    const lightbox = document.getElementById("video-lightbox");
-    const video = document.getElementById("video-player");
+// async function openVideo(id) {
+//     const lightbox = document.getElementById("video-lightbox");
+//     const video = document.getElementById("video-player");
 
-    try {
-        const res = await fetch(`/video-api/storage/video?id=${id}`, {
-            credentials: "include"
-        });
+//     try {
+//         const res = await fetch(`/video-api/storage/video?id=${id}`, {
+//             credentials: "include"
+//         });
 
-        if (!res.ok) {
-            alert("Video failed to load");
-            return;
-        }
+//         if (!res.ok) {
+//             alert("Video failed to load");
+//             return;
+//         }
 
-        const blob = await res.blob();
-        const url = URL.createObjectURL(blob);
+//         const blob = await res.blob();
+//         const url = URL.createObjectURL(blob);
 
-        video.src = url;
-        lightbox.style.display = "flex";
-        video.play();
+//         video.src = url;
+//         lightbox.style.display = "flex";
+//         video.play();
 
-        function close() {
-            video.pause();
-            video.src = "";
-            URL.revokeObjectURL(url);
-            lightbox.style.display = "none";
-        }
+//         function close() {
+//             video.pause();
+//             video.src = "";
+//             URL.revokeObjectURL(url);
+//             lightbox.style.display = "none";
+//         }
 
-        document.getElementById("close-video").onclick = close;
+//         document.getElementById("close-video").onclick = close;
 
-        lightbox.onclick = e => {
-            if (e.target === lightbox) close();
-        };
-    } catch (err) {
-        alert("Video failed to load");
-    }
-}
+//         lightbox.onclick = e => {
+//             if (e.target === lightbox) close();
+//         };
+//     } catch (err) {
+//         alert("Video failed to load");
+//     }
+// }
 
 document.addEventListener("DOMContentLoaded", async () => { 
   const isLoginPage = window.location.pathname.endsWith("/login/") || window.location.pathname.endsWith("/login"); 
