@@ -6,6 +6,7 @@ const vcPlayIcon = document.getElementById("vc-play-icon");
 const vcClose = document.getElementById("vc-close-btn");
 const vcProgress = document.getElementById("vc-progress-bar");
 const vcProgressContainer = document.getElementById("vc-progress-container");
+const vcControls = document.getElementById("vc-controls");
 const vcMute = document.getElementById("vc-mute-btn");
 const vcMuteIcon = document.getElementById("vc-mute-icon");
 const vcTime = document.getElementById("vc-time");
@@ -20,6 +21,9 @@ const VC_ICONS = {
   maximize: "/assets/svg/maximize.svg",
   minimize: "/assets/svg/minimize.svg"
 };
+
+const VC_IDLE_DELAY_MS = 2000;
+let vcIdleTimer = null;
 
 function formatTime(t) {
   if (!Number.isFinite(t) || t < 0) return "0:00";
@@ -58,6 +62,32 @@ function updateFullscreenIcon() {
   }
 }
 
+function setIdleState(isIdle) {
+  vcContainer.classList.toggle("idle", isIdle);
+}
+
+function clearIdleTimer() {
+  if (vcIdleTimer) {
+    clearTimeout(vcIdleTimer);
+    vcIdleTimer = null;
+  }
+}
+
+function resetIdleTimer() {
+  if (!vcContainer.classList.contains("playing")) {
+    setIdleState(false);
+    return;
+  }
+
+  setIdleState(false);
+  clearIdleTimer();
+  vcIdleTimer = setTimeout(() => {
+    if (vcContainer.classList.contains("playing")) {
+      setIdleState(true);
+    }
+  }, VC_IDLE_DELAY_MS);
+}
+
 function isFullscreenActive() {
   return Boolean(
     document.fullscreenElement ||
@@ -87,6 +117,8 @@ function openVcVideo(url) {
   vcPlayer.src = url;
   vcLightbox.style.display = "flex";
   vcPlayer.pause();
+  setIdleState(false);
+  clearIdleTimer();
   updatePlayIcon();
 }
 
@@ -108,10 +140,13 @@ if (window.PointerEvent) {
 vcPlayer.addEventListener("play", () => {
   vcContainer.classList.add("playing");
   updatePlayIcon();
+  resetIdleTimer();
 });
 
 vcPlayer.addEventListener("pause", () => {
   vcContainer.classList.remove("playing");
+  setIdleState(false);
+  clearIdleTimer();
   updatePlayIcon();
 });
 
@@ -148,6 +183,19 @@ vcFullscreen.addEventListener("click", () => {
   }
 });
 
+function bindActivityEvents(el) {
+  if (!el) return;
+  el.addEventListener("pointermove", resetIdleTimer);
+  el.addEventListener("pointerdown", resetIdleTimer);
+  el.addEventListener("touchstart", resetIdleTimer, { passive: true });
+  el.addEventListener("mousemove", resetIdleTimer);
+}
+
+bindActivityEvents(vcLightbox);
+bindActivityEvents(vcPlayer);
+bindActivityEvents(vcOverlay);
+bindActivityEvents(vcControls);
+
 function closeVc() {
   exitFullscreenIfNeeded();
   vcPlayer.pause();
@@ -158,6 +206,8 @@ function closeVc() {
   vcLightbox.style.display = "none";
   vcProgress.style.width = "0%";
   vcTime.textContent = "0:00 / 0:00";
+  setIdleState(false);
+  clearIdleTimer();
   updatePlayIcon();
 }
 
