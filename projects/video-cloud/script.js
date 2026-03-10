@@ -153,25 +153,57 @@ async function openVcVideoFromId(id) {
 async function getThumbnailFromVideo(videoUrl, seekTime = 1) {
     return new Promise((resolve, reject) => {
         const video = document.createElement("video");
-        video.src = videoUrl;
-        video.crossOrigin = "anonymous";
+        video.preload = "metadata";
         video.muted = true;
+        video.playsInline = true;
 
-        video.addEventListener("loadeddata", () => {
-            video.currentTime = seekTime;
+        const isSameOrigin =
+            videoUrl.startsWith("/") || videoUrl.startsWith(window.location.origin);
+        if (!isSameOrigin) {
+            video.crossOrigin = "anonymous";
+        }
+
+        let cleaned = false;
+        const cleanup = () => {
+            if (cleaned) return;
+            cleaned = true;
+            video.remove();
+        };
+
+        const fail = (err) => {
+            cleanup();
+            reject(err);
+        };
+
+        video.addEventListener("error", fail);
+
+        video.addEventListener("loadedmetadata", () => {
+            const duration = Number.isFinite(video.duration) ? video.duration : 0;
+            const safeTime = duration > 0 ? Math.min(seekTime, Math.max(0, duration - 0.1)) : 0;
+            video.currentTime = safeTime;
         });
 
         video.addEventListener("seeked", () => {
             const canvas = document.createElement("canvas");
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
+            canvas.width = video.videoWidth || 320;
+            canvas.height = video.videoHeight || 180;
             const ctx = canvas.getContext("2d");
+            if (!ctx) {
+                fail(new Error("Canvas not supported"));
+                return;
+            }
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            const thumbnail = canvas.toDataURL("image/png");
-            resolve(thumbnail);
+            try {
+                const thumbnail = canvas.toDataURL("image/png");
+                cleanup();
+                resolve(thumbnail);
+            } catch (err) {
+                fail(err);
+            }
         });
 
-        video.addEventListener("error", (e) => reject(e));
+        video.src = videoUrl;
+        video.load();
     });
 }
 

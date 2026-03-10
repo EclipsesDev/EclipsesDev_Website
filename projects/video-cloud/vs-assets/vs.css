@@ -10,9 +10,10 @@
 
 #vc-player {
   width: 100%;
-  height: auto;
+  height: 100%;
   border-radius: 10px;
   background: black;
+  object-fit: contain;
 }
 
 #vc-overlay {
@@ -131,9 +132,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 80vw;
+  height: 80vh;
   max-width: 80vw;
   max-height: 80vh;
-  width: 100%;
 }
 
 .vc-icon {
