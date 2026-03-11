@@ -8,8 +8,8 @@
     
     <link rel="icon" href="/assets/img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="/assets/style.css">
-    <link rel="stylesheet" href="/projects/video-cloud/vs-assets/vs.css">
-    <link rel="stylesheet" href="/projects/video-cloud/style.css">
+    <link rel="stylesheet" href="/assets/video-cloud/player.css">
+    <link rel="stylesheet" href="/assets/video-cloud/app.css">
 </head>
 <body>
 
@@ -26,37 +26,37 @@
         <div id="video-grid"></div>
     </div>
 
-    <div class="vc-lightbox" id="vc-lightbox">
-        <div class="vc-video-container">
-            <video id="vc-player" playsinline webkit-playsinline></video>
+    <div class="video-lightbox" id="video-lightbox">
+        <div class="video-player-shell">
+            <video id="video-player" playsinline webkit-playsinline></video>
 
-            <div id="vc-overlay">
-                <button id="vc-play-btn" type="button" aria-label="Play or pause video">
-                    <img id="vc-play-icon" class="vc-icon vc-play-icon" src="/assets/img/Play.png" alt="Play">
+            <div id="video-overlay">
+                <button id="video-play-toggle" type="button" aria-label="Play or pause video">
+                    <img id="video-play-icon" class="video-icon video-icon--play" src="/assets/img/Play.png" alt="Play">
                 </button>
             </div>
 
-            <div id="vc-controls">
-                <div id="vc-progress-container">
-                    <div id="vc-progress-bar"></div>
+            <div id="video-controls">
+                <div id="video-progress">
+                    <div id="video-progress-bar"></div>
                 </div>
-                <button id="vc-mute-btn" type="button" aria-label="Toggle mute">
-                    <img id="vc-mute-icon" class="vc-icon vc-control-icon" src="/assets/svg/unmute.svg" alt="Unmuted">
+                <button id="video-mute" type="button" aria-label="Toggle mute">
+                    <img id="video-mute-icon" class="video-icon video-icon--control" src="/assets/svg/unmute.svg" alt="Unmuted">
                 </button>
-                <span id="vc-time">0:00 / 0:00</span>
-                <button id="vc-fullscreen-btn" type="button" aria-label="Toggle fullscreen">
-                    <img id="vc-fullscreen-icon" class="vc-icon vc-control-icon" src="/assets/svg/maximize.svg" alt="Enter fullscreen">
+                <span id="video-time">0:00 / 0:00</span>
+                <button id="video-fullscreen" type="button" aria-label="Toggle fullscreen">
+                    <img id="video-fullscreen-icon" class="video-icon video-icon--control" src="/assets/svg/maximize.svg" alt="Enter fullscreen">
                 </button>
             </div>
         </div>
 
-        <button id="vc-close-btn" type="button" aria-label="Close video">
-            <img id="vc-close-icon" class="vc-icon vc-close-icon" src="/assets/svg/close.svg" alt="Close">
+        <button id="video-close" type="button" aria-label="Close video">
+            <img id="video-close-icon" class="video-icon video-icon--close" src="/assets/svg/close.svg" alt="Close">
         </button>
     </div>
 
-    <script src="/projects/video-cloud/vs-assets/vc.js"></script>
-    <script src="/projects/video-cloud/auth.js"></script>
-    <script src="/projects/video-cloud/script.js"></script>
+    <script src="/assets/video-cloud/player.js"></script>
+    <script src="/assets/video-cloud/auth.js"></script>
+    <script src="/assets/video-cloud/app.js"></script>
 </body>
 </html>

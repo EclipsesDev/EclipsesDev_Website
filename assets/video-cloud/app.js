@@ -116,7 +116,7 @@ async function loadVideos() {
             title.textContent = video.title || `Video #${video.id}`;
             card.appendChild(title);
 
-            card.onclick = () => openVcVideoFromId(video.id);
+            card.onclick = () => openVideoFromId(video.id);
 
             container.appendChild(card);
             return { video, img };
@@ -135,10 +135,10 @@ async function loadVideos() {
     }
 }
 
-async function openVcVideoFromId(id) {
+async function openVideoFromId(id) {
     try {
         const url = `/video-api/storage/video?id=${id}`;
-        openVcVideo(url);
+        openVideoPlayer(url);
     } catch (err) {
         console.error("Video load error:", err);
 
