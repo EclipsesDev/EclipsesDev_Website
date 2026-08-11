@@ -499,3 +499,52 @@ updateMuteIcon();
 updateFullscreenIcon();
 applyFullscreenLayoutState();
 preloadPlayerIcons();
+
+/* Volume control: sync slider, handle input and wheel, show on hover/touch */
+const volumeContainer = document.getElementById('video-mute-container');
+const volumeSlider = document.getElementById('video-volume-slider');
+
+if (volumeSlider) {
+  const initial = Number.isFinite(player.volume) ? Math.round(player.volume * 100) : 100;
+  volumeSlider.value = initial;
+
+  volumeSlider.addEventListener('input', (e) => {
+    const v = Math.min(100, Math.max(0, Number(e.target.value)));
+    player.volume = v / 100;
+    if (v === 0) player.muted = true;
+    else if (player.muted) player.muted = false;
+    updateMuteIcon();
+  });
+
+  volumeContainer?.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? -2 : 2;
+    const next = Math.min(100, Math.max(0, Number(volumeSlider.value) + delta));
+    volumeSlider.value = next;
+    volumeSlider.dispatchEvent(new Event('input', { bubbles: true }));
+  }, { passive: false });
+
+  player.addEventListener('volumechange', () => {
+    const v = Math.round(player.volume * 100);
+    if (Number(volumeSlider.value) !== v) volumeSlider.value = v;
+    updateMuteIcon();
+  });
+
+  if (volumeContainer) {
+    const muteBtn = document.getElementById('video-mute');
+    let touchToggleTimeout = null;
+    const toggleVolumePopup = (ev) => {
+      ev.stopPropagation();
+      volumeContainer.classList.toggle('volume-open');
+      if (volumeContainer.classList.contains('volume-open')) {
+        clearTimeout(touchToggleTimeout);
+        touchToggleTimeout = setTimeout(() => volumeContainer.classList.remove('volume-open'), 3000);
+      } else {
+        clearTimeout(touchToggleTimeout);
+      }
+    };
+    muteBtn?.addEventListener('touchend', toggleVolumePopup, { passive: true });
+    // also allow context menu (right click / long press) to open on desktop
+    muteBtn?.addEventListener('contextmenu', (ev) => { ev.preventDefault(); toggleVolumePopup(ev); });
+  }
+}
