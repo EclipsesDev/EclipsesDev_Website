@@ -408,10 +408,8 @@ player.addEventListener("timeupdate", () => {
   updatePlaybackProgress();
 });
 
-muteButton.addEventListener("click", () => {
-  player.muted = !player.muted;
-  updateMuteIcon();
-});
+// Mute button behavior (volume-aware) is wired up further below, alongside
+// the vertical volume slider, so it can remember the last audible volume.
 
 fullscreenButton.addEventListener("click", async () => {
   if (!isFullscreenActive()) {
@@ -500,51 +498,167 @@ updateFullscreenIcon();
 applyFullscreenLayoutState();
 preloadPlayerIcons();
 
-/* Volume control: sync slider, handle input and wheel, show on hover/touch */
-const volumeContainer = document.getElementById('video-mute-container');
-const volumeSlider = document.getElementById('video-volume-slider');
+const VOLUME_SETTINGS_KEY = "eclipsesdev_video_volume_v1";
+const volumeContainer = document.getElementById("video-mute-container");
+const volumeSlider = document.getElementById("video-volume-slider");
+const volumeFill = document.getElementById("video-volume-fill");
 
-if (volumeSlider) {
-  const initial = Number.isFinite(player.volume) ? Math.round(player.volume * 100) : 100;
-  volumeSlider.value = initial;
+function loadVolumeSettings() {
+  try {
+    const raw = localStorage.getItem(VOLUME_SETTINGS_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (typeof parsed !== "object" || parsed === null) return null;
+    return parsed;
+  } catch (e) {
+    return null;
+  }
+}
 
-  volumeSlider.addEventListener('input', (e) => {
-    const v = Math.min(100, Math.max(0, Number(e.target.value)));
-    player.volume = v / 100;
-    if (v === 0) player.muted = true;
-    else if (player.muted) player.muted = false;
+function saveVolumeSettings(volume, muted) {
+  try {
+    localStorage.setItem(VOLUME_SETTINGS_KEY, JSON.stringify({ volume, muted }));
+  } catch (e) {}
+}
+
+if (volumeSlider && volumeFill && volumeContainer) {
+  let lastAudibleVolume = 1;
+  let isVolumeDragging = false;
+  let activeVolumePointerId = null;
+
+  const savedSettings = loadVolumeSettings();
+  if (savedSettings && Number.isFinite(savedSettings.volume)) {
+    player.volume = Math.min(1, Math.max(0, savedSettings.volume));
+    player.muted = !!savedSettings.muted;
+    if (player.volume > 0) lastAudibleVolume = player.volume;
+  }
+
+  function updateVolumeUi() {
+    const percent = player.muted ? 0 : Math.round(player.volume * 100);
+    volumeFill.style.height = `${percent}%`;
+    volumeSlider.setAttribute("aria-valuenow", String(percent));
     updateMuteIcon();
+  }
+
+  function setVolume(nextVolume, { persist = true } = {}) {
+    const clamped = Math.min(1, Math.max(0, nextVolume));
+    player.volume = clamped;
+    if (clamped > 0) {
+      lastAudibleVolume = clamped;
+      if (player.muted) player.muted = false;
+    } else {
+      player.muted = true;
+    }
+    updateVolumeUi();
+    if (persist) saveVolumeSettings(player.volume, player.muted);
+  }
+
+  function volumeFromClientY(clientY) {
+    const rect = volumeSlider.getBoundingClientRect();
+    if (rect.height <= 0) return player.volume;
+    const ratio = (rect.bottom - clientY) / rect.height;
+    return Math.min(1, Math.max(0, ratio));
+  }
+
+  function setVolumeDraggingState(isDragging) {
+    isVolumeDragging = isDragging;
+    volumeSlider.classList.toggle("is-dragging", isDragging);
+  }
+
+  const onVolumePointerDown = (event) => {
+    if (event.pointerType === "mouse" && event.button !== 0) return;
+    event.preventDefault();
+    event.stopPropagation();
+    activeVolumePointerId = event.pointerId;
+    setVolumeDraggingState(true);
+    volumeSlider.setPointerCapture?.(event.pointerId);
+    setVolume(volumeFromClientY(event.clientY));
+  };
+
+  const onVolumePointerMove = (event) => {
+    if (!isVolumeDragging) return;
+    if (activeVolumePointerId !== null && event.pointerId !== activeVolumePointerId) return;
+    event.preventDefault();
+    setVolume(volumeFromClientY(event.clientY));
+  };
+
+  const stopVolumeDrag = (event) => {
+    if (!isVolumeDragging) return;
+    if (activeVolumePointerId !== null && event.pointerId !== activeVolumePointerId) return;
+    setVolumeDraggingState(false);
+    volumeSlider.releasePointerCapture?.(activeVolumePointerId);
+    activeVolumePointerId = null;
+  };
+
+  volumeSlider.addEventListener("pointerdown", onVolumePointerDown);
+  volumeSlider.addEventListener("pointermove", onVolumePointerMove);
+  document.addEventListener("pointermove", onVolumePointerMove);
+  volumeSlider.addEventListener("pointerup", stopVolumeDrag);
+  document.addEventListener("pointerup", stopVolumeDrag);
+  volumeSlider.addEventListener("pointercancel", stopVolumeDrag);
+  document.addEventListener("pointercancel", stopVolumeDrag);
+
+  volumeSlider.addEventListener("keydown", (event) => {
+    const STEP = 0.05;
+    switch (event.key) {
+      case "ArrowUp":
+      case "ArrowRight":
+        event.preventDefault();
+        setVolume(player.volume + STEP);
+        break;
+      case "ArrowDown":
+      case "ArrowLeft":
+        event.preventDefault();
+        setVolume(player.volume - STEP);
+        break;
+      case "Home":
+        event.preventDefault();
+        setVolume(0);
+        break;
+      case "End":
+        event.preventDefault();
+        setVolume(1);
+        break;
+      default:
+        break;
+    }
   });
 
-  volumeContainer?.addEventListener('wheel', (e) => {
-    e.preventDefault();
-    const delta = e.deltaY > 0 ? -2 : 2;
-    const next = Math.min(100, Math.max(0, Number(volumeSlider.value) + delta));
-    volumeSlider.value = next;
-    volumeSlider.dispatchEvent(new Event('input', { bubbles: true }));
+  volumeContainer.addEventListener("wheel", (event) => {
+    event.preventDefault();
+    const delta = event.deltaY > 0 ? -0.05 : 0.05;
+    setVolume(player.volume + delta);
   }, { passive: false });
 
-  player.addEventListener('volumechange', () => {
-    const v = Math.round(player.volume * 100);
-    if (Number(volumeSlider.value) !== v) volumeSlider.value = v;
+  player.addEventListener("volumechange", updateVolumeUi);
+
+  let touchToggleTimeout = null;
+  const toggleVolumePopup = (event) => {
+    event.stopPropagation();
+    volumeContainer.classList.toggle("volume-open");
+    clearTimeout(touchToggleTimeout);
+    if (volumeContainer.classList.contains("volume-open")) {
+      touchToggleTimeout = setTimeout(() => volumeContainer.classList.remove("volume-open"), 3000);
+    }
+  };
+  muteButton.addEventListener("touchend", toggleVolumePopup, { passive: true });
+
+  updateVolumeUi();
+
+  // Mute button toggles muted state while remembering the last audible volume.
+  muteButton.addEventListener("click", () => {
+    if (player.muted || player.volume === 0) {
+      setVolume(lastAudibleVolume > 0 ? lastAudibleVolume : 1);
+    } else {
+      player.muted = true;
+      updateVolumeUi();
+      saveVolumeSettings(player.volume, true);
+    }
+  });
+} else {
+  // Fallback if the slider markup isn't present.
+  muteButton.addEventListener("click", () => {
+    player.muted = !player.muted;
     updateMuteIcon();
   });
-
-  if (volumeContainer) {
-    const muteBtn = document.getElementById('video-mute');
-    let touchToggleTimeout = null;
-    const toggleVolumePopup = (ev) => {
-      ev.stopPropagation();
-      volumeContainer.classList.toggle('volume-open');
-      if (volumeContainer.classList.contains('volume-open')) {
-        clearTimeout(touchToggleTimeout);
-        touchToggleTimeout = setTimeout(() => volumeContainer.classList.remove('volume-open'), 3000);
-      } else {
-        clearTimeout(touchToggleTimeout);
-      }
-    };
-    muteBtn?.addEventListener('touchend', toggleVolumePopup, { passive: true });
-    // also allow context menu (right click / long press) to open on desktop
-    muteBtn?.addEventListener('contextmenu', (ev) => { ev.preventDefault(); toggleVolumePopup(ev); });
-  }
 }

@@ -54,12 +54,15 @@
                     <div id="video-progress-bar"></div>
                 </div>
                 <div class="volume-control" id="video-mute-container">
+                    <div class="volume-popup" aria-hidden="true">
+                        <div id="video-volume-slider" class="volume-slider" role="slider" tabindex="0"
+                             aria-label="Volume" aria-orientation="vertical" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
+                            <div id="video-volume-fill" class="volume-slider-fill"></div>
+                        </div>
+                    </div>
                     <button id="video-mute" type="button" aria-label="Toggle mute">
                         <img id="video-mute-icon" class="video-icon video-icon--control" src="/assets/svg/unmute.svg" alt="Unmuted">
                     </button>
-                    <div class="volume-popup" aria-hidden="true">
-                        <input id="video-volume-slider" class="volume-slider" type="range" min="0" max="100" value="100" aria-label="Volume">
-                    </div>
                 </div>
                 <span id="video-time">0:00 / 0:00</span>
                 <button id="video-fullscreen" type="button" aria-label="Toggle fullscreen">
